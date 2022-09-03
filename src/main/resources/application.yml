@@ -13,6 +13,9 @@ spring:
     livereload:
       enabled: true
     add-properties: true
+    
+server:
+  port: 8085
 
 logging:
   level:
