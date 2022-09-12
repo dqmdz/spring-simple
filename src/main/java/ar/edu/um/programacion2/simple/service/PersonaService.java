@@ -20,7 +20,7 @@ import ar.edu.um.programacion2.simple.repository.PersonaRepository;
  */
 @Service
 public class PersonaService {
-	
+
 	@Autowired
 	private PersonaRepository repository;
 
@@ -37,8 +37,12 @@ public class PersonaService {
 	}
 
 	@Transactional
-	public void deleteByDocumento(Long documento) {
+	public Boolean deleteByDocumento(Long documento) {
+		if (repository.findByDocumento(documento).isEmpty()) {
+			return false;
+		}
 		repository.deleteByDocumento(documento);
+		return !repository.findByDocumento(documento).isPresent();
 	}
 
 	public Persona update(Persona newPersona, Long documento) {

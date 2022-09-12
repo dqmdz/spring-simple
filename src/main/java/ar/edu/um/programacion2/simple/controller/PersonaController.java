@@ -21,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import ar.edu.um.programacion2.simple.exception.PersonaNotFoundException;
 import ar.edu.um.programacion2.simple.model.Persona;
 import ar.edu.um.programacion2.simple.service.PersonaService;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author daniel
@@ -28,6 +29,7 @@ import ar.edu.um.programacion2.simple.service.PersonaService;
  */
 @RestController
 @RequestMapping("/persona")
+@Slf4j
 public class PersonaController {
 
 	@Autowired
@@ -46,21 +48,21 @@ public class PersonaController {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
 		}
 	}
-	
+
 	@PostMapping("/")
 	public ResponseEntity<Persona> add(@RequestBody Persona persona) {
 		return new ResponseEntity<Persona>(service.add(persona), HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/{documento}")
-	public ResponseEntity<Void> deleteByDocumento(@PathVariable Long documento) {
-		service.deleteByDocumento(documento);
-		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	public ResponseEntity<Boolean> deleteByDocumento(@PathVariable Long documento) {
+		log.debug("Eliminando cliente {}", documento);
+		return new ResponseEntity<Boolean>(service.deleteByDocumento(documento), HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/{documento}")
 	public ResponseEntity<Persona> update(@RequestBody Persona persona, @PathVariable Long documento) {
 		return new ResponseEntity<Persona>(service.update(persona, documento), HttpStatus.OK);
 	}
-	
+
 }
